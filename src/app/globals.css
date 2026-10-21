@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
+/* Dark ("night at the haram") is the default theme. */
+:root {
+  --bg: #060912;
+  --surface: #0c1220;
+  --surface-2: #121a2c;
+  --surface-3: #1a2440;
+  --border: rgb(255 255 255 / 0.08);
+  --border-strong: rgb(255 255 255 / 0.16);
+  --text: #efe8d8;
+  --muted: #9ba3b4;
+  --gold: #d6b25e;
+  --gold-strong: #f2d389;
+  --gold-ink: #d6b25e;
+  --emerald: #2fae74;
+  --crimson: #c23a45;
+  --hero-fade: #060912;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg: #f8f5ee;
+  --surface: #ffffff;
+  --surface-2: #f1ece0;
+  --surface-3: #e7dfcd;
+  --border: rgb(30 25 15 / 0.1);
+  --border-strong: rgb(30 25 15 / 0.2);
+  --text: #191b22;
+  --muted: #5d6170;
+  --gold: #b48a2f;
+  --gold-strong: #d6b25e;
+  --gold-ink: #8a6417;
+  --emerald: #187a4f;
+  --crimson: #a5232f;
+  --hero-fade: #f8f5ee;
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-fg: var(--text);
+  --color-muted: var(--muted);
+  --color-gold: var(--gold);
+  --color-gold-strong: var(--gold-strong);
+  --color-gold-ink: var(--gold-ink);
+  --color-emerald: var(--emerald);
+  --color-crimson: var(--crimson);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-cormorant), Georgia, serif;
+  --font-arabic: var(--font-amiri), "Noto Naskh Arabic", serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--gold) 35%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Eight-pointed star (khatam) lattice used as a quiet background texture. */
+.bg-girih {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23d6b25e' stroke-width='1'%3E%3Cpath d='M32 10 38.5 25.5 54 32 38.5 38.5 32 54 25.5 38.5 10 32 25.5 25.5Z'/%3E%3Crect x='19' y='19' width='26' height='26' transform='rotate(45 32 32)'/%3E%3Crect x='19' y='19' width='26' height='26'/%3E%3Cpath d='M0 0 10 10M64 0 54 10M0 64 10 54M64 64 54 54'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 64px 64px;
+}
+
+/* RTL text that still sits on the page's left edge unless a utility (e.g. text-center) says otherwise. */
+@layer components {
+  .arabic {
+    font-family: var(--font-arabic);
+    direction: rtl;
+    text-align: left;
+  }
+}
+
+/* Player range inputs */
+.player-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 999px;
+  cursor: pointer;
+  background: linear-gradient(to right, var(--gold) var(--progress, 0%), rgb(255 255 255 / 0.25) var(--progress, 0%));
+  transition: height 0.15s;
+}
+.player-range:hover {
+  height: 6px;
+}
+.player-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--gold-strong);
+  box-shadow: 0 0 0 4px rgb(214 178 94 / 0.25);
+}
+.player-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--gold-strong);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
