@@ -1,5 +1,5 @@
 import Fuse from "fuse.js";
-import { categoryLabel, collections, shrines, videos } from "@/content";
+import { categoryLabel, collections, shrines, thumbOf, videos } from "@/content";
 
 export interface SearchItem {
   type: "video" | "shrine" | "collection";
@@ -17,7 +17,7 @@ const items: SearchItem[] = [
     title: v.title,
     subtitle: `${categoryLabel(v.category)} · ${shrines.find((s) => s.slug === v.shrine)?.city ?? "360° video"}`,
     keywords: [v.summary, v.tags.join(" "), v.shrine ?? ""].join(" "),
-    poster: v.poster,
+    poster: thumbOf(v),
   })),
   ...shrines.map((s) => ({
     type: "shrine" as const,

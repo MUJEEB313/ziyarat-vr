@@ -77,12 +77,12 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 p-4 pt-[12vh] backdrop-blur-sm" onClick={onClose} role="presentation">
+    <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 backdrop-blur-sm sm:p-4 sm:pt-[12vh]" onClick={onClose} role="presentation">
       <div
         role="dialog"
         aria-modal="true"
         aria-label="Search"
-        className="w-full max-w-xl overflow-hidden rounded-2xl border border-line-strong bg-surface shadow-2xl"
+        className="flex h-dvh w-full flex-col overflow-hidden bg-surface pt-[env(safe-area-inset-top)] shadow-2xl sm:h-auto sm:max-w-xl sm:rounded-2xl sm:border sm:border-line-strong sm:pt-0"
         onClick={(e) => e.stopPropagation()}
         onKeyDown={onKeyDown}
       >
@@ -92,18 +92,23 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
             ref={inputRef}
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search: Karbala, Arbaeen, Imam Rida, majlis…"
-            className="h-14 flex-1 bg-transparent text-base outline-none placeholder:text-muted"
+            type="search"
+            enterKeyHint="go"
+            placeholder="Search: Karbala, Arbaeen, majlis…"
+            className="h-14 min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted focus-visible:outline-none"
             role="combobox"
             aria-expanded="true"
             aria-controls="search-results"
             aria-activedescendant={results[active] ? `sr-${active}` : undefined}
           />
-          <button onClick={onClose} className="rounded border border-line px-1.5 py-0.5 text-[11px] text-muted">
+          <button onClick={onClose} className="h-11 px-1 text-sm font-medium text-gold-ink sm:hidden">
+            Cancel
+          </button>
+          <button onClick={onClose} className="hidden rounded border border-line px-1.5 py-0.5 text-[11px] text-muted sm:block">
             Esc
           </button>
         </div>
-        <ul id="search-results" role="listbox" className="max-h-[60vh] overflow-y-auto p-2">
+        <ul id="search-results" role="listbox" className="flex-1 overflow-y-auto overscroll-contain p-2 sm:max-h-[60vh] sm:flex-none">
           {results.length === 0 && <li className="px-3 py-8 text-center text-sm text-muted">No results for “{q}”.</li>}
           {results.map((r, i) => (
             <li key={r.href} id={`sr-${i}`} role="option" aria-selected={i === active}>
@@ -130,7 +135,7 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
             </li>
           ))}
         </ul>
-        {!q && <p className="border-t border-line px-4 py-2.5 text-xs text-muted">Type to search all 360° videos. Use ↑ ↓ and Enter to navigate.</p>}
+        {!q && <p className="hidden border-t border-line px-4 py-2.5 text-xs text-muted sm:block">Type to search all 360° videos. Use ↑ ↓ and Enter to navigate.</p>}
       </div>
     </div>
   );

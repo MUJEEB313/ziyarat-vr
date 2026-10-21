@@ -54,6 +54,8 @@ Before launch, set `contactEmail` in `src/lib/site.ts`.
 - **Saved**: favourites, watch later and continue watching, stored on the device with no account.
 - **Embeds**: `/embed/<slug>` is a chrome-less player that mosques and centres can drop into an `<iframe>` (the Embed button generates the code).
 - ⌘K search, dark/light themes, SEO metadata, `VideoObject` JSON-LD, sitemap and an Open Graph image.
+- **Mobile-first**: bottom tab bar, 44px touch targets, safe-area support for notched phones, full-screen search, an iPhone full-screen fallback with landscape lock, gyroscope look-around, and installation to the home screen (web app manifest).
+- **Light on data**: card thumbnails (~30 KB), only the font weights in use, no prefetching from cards, and the home page's live 3D scene loads only once the page is idle (never on data-saver or 2G).
 
 ## Placeholder scenes & posters
 
@@ -62,6 +64,7 @@ Generated scenes are described by a `SceneSpec` (`src/lib/scene/types.ts`) and d
 ```bash
 npm run dev
 npm run posters                 # all, or: npm run posters <slug> …
+npm run thumbs                  # 800px card thumbnails (-thumb.jpg) for every poster
 ```
 
 This uses the local Chrome at `/usr/bin/google-chrome` (override with `CHROME_PATH`) and the dev-only route `/dev/capture?slug=<slug>`, which renders nothing in production builds.

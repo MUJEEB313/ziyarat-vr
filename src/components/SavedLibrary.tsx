@@ -35,7 +35,7 @@ export function SavedLibrary() {
             role="tab"
             aria-selected={tab === t.id}
             onClick={() => setTab(t.id)}
-            className={`flex h-10 shrink-0 items-center gap-2 rounded-full px-4 text-sm font-medium transition ${tab === t.id ? "bg-fg text-bg" : "border border-line bg-surface text-muted hover:text-fg"}`}
+            className={`flex h-11 shrink-0 items-center gap-2 rounded-full px-4 sm:h-10 text-sm font-medium transition ${tab === t.id ? "bg-fg text-bg" : "border border-line bg-surface text-muted hover:text-fg"}`}
           >
             {t.label}
             <span className={`rounded-full px-1.5 text-xs ${tab === t.id ? "bg-bg/20" : "bg-surface-2"}`}>{counts[t.id]}</span>

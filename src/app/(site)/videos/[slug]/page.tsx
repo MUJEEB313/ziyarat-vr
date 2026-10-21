@@ -5,7 +5,7 @@ import { Icon } from "@/components/Icons";
 import { VideoPlayer } from "@/components/player/VideoPlayer";
 import { SavePill } from "@/components/SaveButtons";
 import { ShareEmbed } from "@/components/ShareEmbed";
-import { categoryLabel, getShrine, getVideo, relatedVideos, videos } from "@/content";
+import { categoryLabel, getShrine, getVideo, relatedVideos, thumbOf, videos } from "@/content";
 import { formatDate, formatDuration, formatLabel, formatViews } from "@/lib/format";
 import { asset, site } from "@/lib/site";
 
@@ -56,7 +56,7 @@ export default async function WatchPage({ params }: Props) {
 
       <div className="mx-auto mt-6 grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_360px]">
         <article>
-          <nav aria-label="Breadcrumb" className="mb-3 flex flex-wrap items-center gap-1.5 text-xs text-muted">
+          <nav aria-label="Breadcrumb" className="mb-3 flex flex-wrap items-center gap-x-1.5 text-xs text-muted [&_a]:inline-flex [&_a]:h-10 [&_a]:items-center sm:[&_a]:h-8">
             <Link href="/videos" className="hover:text-fg">
               Library
             </Link>
@@ -106,7 +106,7 @@ export default async function WatchPage({ params }: Props) {
                     {shrine.city}, {shrine.country}
                   </p>
                   <p className="mt-3 text-sm leading-relaxed text-fg/85">{shrine.summary}</p>
-                  <Link href={`/shrines/${shrine.slug}`} className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-gold-ink hover:underline">
+                  <Link href={`/shrines/${shrine.slug}`} className="mt-2 inline-flex h-11 items-center gap-1.5 text-sm font-medium text-gold-ink hover:underline">
                     About the shrine <Icon name="arrowRight" size={16} />
                   </Link>
                 </div>
@@ -127,7 +127,7 @@ export default async function WatchPage({ params }: Props) {
 
           <div className="mt-8 flex flex-wrap gap-2">
             {video.tags.map((t) => (
-              <Link key={t} href={`/videos?q=${encodeURIComponent(t)}`} className="rounded-full border border-line px-3 py-1 text-xs text-muted transition hover:border-line-strong hover:text-fg">
+              <Link key={t} href={`/videos?q=${encodeURIComponent(t)}`} className="flex h-10 items-center rounded-full border border-line px-3.5 text-xs text-muted transition hover:border-line-strong hover:text-fg">
                 #{t}
               </Link>
             ))}
@@ -140,10 +140,10 @@ export default async function WatchPage({ params }: Props) {
           <ul className="space-y-4">
             {related.map((v) => (
               <li key={v.slug}>
-                <Link href={`/videos/${v.slug}`} className="group flex gap-3">
+                <Link href={`/videos/${v.slug}`} prefetch={false} className="group flex gap-3">
                   <span className="relative aspect-video w-40 shrink-0 overflow-hidden rounded-xl bg-surface-2 ring-1 ring-line">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={asset(v.poster)} alt="" loading="lazy" className="h-full w-full object-cover transition group-hover:scale-105" />
+                    <img src={asset(thumbOf(v))} alt="" loading="lazy" className="h-full w-full object-cover transition group-hover:scale-105" />
                     <span className="absolute right-1.5 bottom-1.5 rounded bg-black/70 px-1 text-[11px] text-white tabular-nums">{formatDuration(v.duration)}</span>
                   </span>
                   <span className="min-w-0">

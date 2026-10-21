@@ -128,9 +128,9 @@ function hallSurface(lon: number, tanLat: number): RGB {
 
 /**
  * Paint the ground (and, for halls, every surface) per pixel into an
- * equirectangular RGBA buffer of width W and height H.
+ * equirectangular RGBA buffer of width W and height H, for rows [rowFrom, rowTo).
  */
-export function paintGround(spec: SceneSpec, img: Uint8ClampedArray, W: number, H: number, pal: SkyPalette) {
+export function paintGround(spec: SceneSpec, img: Uint8ClampedArray, W: number, H: number, pal: SkyPalette, rowFrom = 0, rowTo = H) {
   const sinLon = new Float32Array(W);
   const cosLon = new Float32Array(W);
   for (let i = 0; i < W; i++) {
@@ -142,7 +142,7 @@ export function paintGround(spec: SceneSpec, img: Uint8ClampedArray, W: number, 
   const startRow = spec.kind === "hall" ? 0 : H / 2;
   const mainLon = spec.kind === "courtyard" ? ((spec.shrines[0]?.lon ?? 180) * Math.PI) / 180 : Math.PI;
 
-  for (let j = startRow; j < H; j++) {
+  for (let j = Math.max(startRow, rowFrom); j < Math.min(H, rowTo); j++) {
     const lat = (0.5 - (j + 0.5) / H) * Math.PI;
     const tanLat = Math.tan(lat);
     for (let i = 0; i < W; i++) {

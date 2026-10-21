@@ -122,6 +122,26 @@ body {
   background: var(--gold-strong);
 }
 
+/* Touch screens: bigger seek bar and thumb. */
+@media (pointer: coarse) {
+  .player-range {
+    height: 6px;
+  }
+  .player-range::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+  }
+  .player-range::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
 .no-scrollbar {
   scrollbar-width: none;
 }

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Icon } from "@/components/Icons";
-import { collections, getCollection, getShrine, videosForCollection } from "@/content";
+import { collections, getCollection, getShrine, thumbOf, videosForCollection } from "@/content";
 import { formatDuration } from "@/lib/format";
 import { asset } from "@/lib/site";
 
@@ -27,7 +27,7 @@ export default async function CollectionPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
-      <Link href="/collections" className="inline-flex items-center gap-1 text-sm text-muted hover:text-fg">
+      <Link href="/collections" className="-my-3 inline-flex h-11 items-center gap-1 text-sm text-muted hover:text-fg">
         <Icon name="chevronLeft" size={16} /> All collections
       </Link>
       <div className="mt-6 grid gap-8 md:grid-cols-[1fr_1.1fr] md:items-end">
@@ -49,18 +49,18 @@ export default async function CollectionPage({ params }: Props) {
         </div>
         {vids[0] && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={asset(vids[0].poster)} alt="" className="aspect-video w-full rounded-2xl object-cover ring-1 ring-line" />
+          <img src={asset(thumbOf(vids[0]))} alt="" className="aspect-video w-full rounded-2xl object-cover ring-1 ring-line" />
         )}
       </div>
 
       <ol className="mt-12 divide-y divide-line rounded-2xl border border-line bg-surface">
         {vids.map((v, i) => (
           <li key={v.slug}>
-            <Link href={`/videos/${v.slug}`} className="group flex items-center gap-4 p-4 transition hover:bg-surface-2 sm:gap-5">
+            <Link href={`/videos/${v.slug}`} prefetch={false} className="group flex items-center gap-4 p-4 transition hover:bg-surface-2 sm:gap-5">
               <span className="font-display w-6 text-center text-2xl text-gold-ink">{i + 1}</span>
               <span className="relative aspect-video w-32 shrink-0 overflow-hidden rounded-lg sm:w-44">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={asset(v.poster)} alt="" loading="lazy" className="h-full w-full object-cover" />
+                <img src={asset(thumbOf(v))} alt="" loading="lazy" className="h-full w-full object-cover" />
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block font-medium group-hover:text-gold-ink">{v.title}</span>

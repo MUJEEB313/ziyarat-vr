@@ -22,8 +22,10 @@ export interface Video {
   shrine?: string;
   format: VideoFormat;
   source: VideoSource;
-  /** Poster image path (16:9). */
+  /** Poster image path (16:9), used for large views and the player. */
   poster: string;
+  /** Smaller (~800px) version of the poster for cards and lists. */
+  thumb?: string;
   /** Duration in seconds. */
   duration: number;
   publishedAt: string;

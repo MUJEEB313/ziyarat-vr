@@ -18,6 +18,9 @@ export const categoryLabel = (c: Category) => CATEGORIES.find((x) => x.id === c)
 /** "Shrine of Imam Ali (a.s.)" → "Imam Ali (a.s.)" for compact labels. */
 export const shrineShortName = (s: { name: string }) => s.name.replace(/^Shrine of /, "");
 
+/** Card-sized image for a video (falls back to the full poster). */
+export const thumbOf = (v: Pick<Video, "poster" | "thumb">) => v.thumb ?? v.poster;
+
 export const getVideo = (slug: string) => videos.find((v) => v.slug === slug);
 export const getShrine = (slug?: string) => (slug ? shrines.find((s) => s.slug === slug) : undefined);
 export const getCollection = (slug: string) => collections.find((c) => c.slug === slug);

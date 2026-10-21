@@ -130,6 +130,8 @@ export default function Vr360Player({
   const [xrSupported, setXrSupported] = useState(false);
   const [inXR, setInXR] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  /** CSS "fullscreen" for browsers that can't fullscreen an element (iPhone Safari). */
+  const [pseudoFs, setPseudoFs] = useState(false);
   const [controlsVisible, setControlsVisible] = useState(true);
   const [hint, setHint] = useState(full);
   const [resumedAt, setResumedAt] = useState<number | null>(null);
@@ -210,7 +212,8 @@ export default function Vr360Player({
       return;
     }
     e.renderer = renderer;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // Phones: cap resolution, since a 3x screen at full res drains battery for little visible gain.
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.matchMedia("(pointer: coarse)").matches ? 1.5 : 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.xr.enabled = true;
     renderer.xr.setReferenceSpaceType("local");
@@ -518,9 +521,32 @@ export default function Vr360Player({
   const toggleFullscreen = useCallback(() => {
     const el = containerRef.current;
     if (!el) return;
-    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
-    else el.requestFullscreen?.().catch(() => {});
-  }, []);
+    if (pseudoFs) return setPseudoFs(false);
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+      return;
+    }
+    if (!el.requestFullscreen) return setPseudoFs(true);
+    el.requestFullscreen({ navigationUI: "hide" })
+      .then(() => {
+        // Phones: 360° video is best watched sideways; ignored where locking isn't allowed.
+        const o = screen.orientation as ScreenOrientation & { lock?: (o: string) => Promise<void> };
+        o.lock?.("landscape").catch(() => {});
+      })
+      .catch(() => setPseudoFs(true));
+  }, [pseudoFs]);
+
+  useEffect(() => {
+    if (!pseudoFs) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setPseudoFs(false);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [pseudoFs]);
 
   const toggleMute = useCallback(() => {
     const v = eng.current.video;
@@ -640,6 +666,7 @@ export default function Vr360Player({
       onMouseMove={() => full && setControlsVisible(true)}
       aria-label={full ? `${title}: 360° player. Drag or use arrow keys to look around, space to play or pause.` : undefined}
       role={full ? "application" : undefined}
+      style={pseudoFs ? { position: "fixed", inset: 0, zIndex: 70, width: "100vw", height: "100dvh", borderRadius: 0 } : undefined}
     >
       {/* Poster stays underneath until the scene is ready (and for files until playback starts). */}
       {poster && (!ready || (!isGenerated && !started)) && (
@@ -702,7 +729,7 @@ export default function Vr360Player({
           )}
 
           <div
-            className={`absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent px-3 pt-12 pb-2 transition-opacity duration-300 sm:px-4 ${showControls ? "opacity-100" : "pointer-events-none opacity-0"}`}
+            className={`absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent px-[max(0.75rem,env(safe-area-inset-left))] pt-12 pb-[max(0.5rem,env(safe-area-inset-bottom))] transition-opacity duration-300 sm:px-4 ${showControls ? "opacity-100" : "pointer-events-none opacity-0"}`}
           >
             <input
               type="range"
@@ -746,12 +773,13 @@ export default function Vr360Player({
                   <button
                     onClick={enterVR}
                     disabled={inXR}
-                    className="ml-1 flex items-center gap-1.5 rounded-full bg-[var(--gold)] px-3 py-1.5 text-sm font-semibold text-black transition hover:bg-[var(--gold-strong)]"
+                    aria-label="Enter VR"
+                    className="ml-1 flex h-11 items-center gap-1.5 rounded-full bg-[var(--gold)] px-3 text-sm font-semibold text-black transition hover:bg-[var(--gold-strong)] sm:h-9"
                   >
-                    <Icon name="headset" size={18} /> Enter VR
+                    <Icon name="headset" size={18} /> <span className="hidden sm:inline">Enter VR</span>
                   </button>
                 )}
-                <CtrlButton label={isFullscreen ? "Exit full screen (f)" : "Full screen (f)"} onClick={toggleFullscreen} icon={isFullscreen ? "exitFullscreen" : "fullscreen"} />
+                <CtrlButton label={isFullscreen || pseudoFs ? "Exit full screen (f)" : "Full screen (f)"} onClick={toggleFullscreen} icon={isFullscreen || pseudoFs ? "exitFullscreen" : "fullscreen"} />
               </div>
             </div>
           </div>
@@ -780,7 +808,7 @@ function CtrlButton({
       aria-label={label}
       title={label}
       aria-pressed={active}
-      className={`grid size-9 place-items-center rounded-full transition hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-[var(--gold)] ${active ? "bg-white/20 text-[var(--gold-strong)]" : ""} ${className}`}
+      className={`grid size-11 place-items-center rounded-full transition hover:bg-white/15 sm:size-9 focus-visible:outline-2 focus-visible:outline-[var(--gold)] ${active ? "bg-white/20 text-[var(--gold-strong)]" : ""} ${className}`}
     >
       <Icon name={icon} size={20} />
     </button>

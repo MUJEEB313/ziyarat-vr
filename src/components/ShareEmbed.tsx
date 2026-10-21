@@ -49,7 +49,7 @@ export function ShareEmbed({ slug, title }: { slug: string; title: string }) {
       {showEmbed && (
         <div className="w-full rounded-2xl border border-line bg-surface p-4">
           <p className="mb-2 text-sm text-muted">Add this 360° player to your mosque, centre or blog website:</p>
-          <textarea readOnly value={embedCode()} rows={3} className="w-full resize-none rounded-xl border border-line bg-bg p-3 font-mono text-xs" onFocus={(e) => e.currentTarget.select()} />
+          <textarea readOnly value={embedCode()} rows={3} className="w-full resize-none rounded-xl border border-line bg-bg p-3 font-mono text-base sm:text-xs" onFocus={(e) => e.currentTarget.select()} />
           <button onClick={() => copy(embedCode(), "embed")} className="mt-2 flex h-9 items-center gap-2 rounded-full bg-gold px-4 text-sm font-semibold text-black">
             <Icon name={copied === "embed" ? "check" : "code"} size={16} /> {copied === "embed" ? "Copied" : "Copy code"}
           </button>

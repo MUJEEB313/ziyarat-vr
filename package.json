@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "posters": "node scripts/render-posters.mjs"
+    "posters": "node scripts/render-posters.mjs",
+    "thumbs": "node scripts/make-thumbs.mjs"
   },
   "dependencies": {
     "fuse.js": "^7.0.0",
@@ -26,6 +27,7 @@
     "eslint": "^9",
     "eslint-config-next": "^15.5.28",
     "playwright-core": "^1.63.0",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

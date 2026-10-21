@@ -35,8 +35,13 @@ export async function renderPanorama(spec: SceneSpec, width: number, fontFamily:
   ctx.fillRect(0, -90, 360, 90);
   await yieldFrame();
 
+  // Painted in row bands, yielding between them, so phones stay responsive while a scene is prepared.
   const img = ctx.createImageData(W, H);
-  paintGround(spec, img.data, W, H, pal);
+  const band = Math.max(16, Math.round(160000 / W));
+  for (let j = spec.kind === "hall" ? 0 : H / 2; j < H; j += band) {
+    paintGround(spec, img.data, W, H, pal, j, j + band);
+    await yieldFrame();
+  }
   ctx.putImageData(img, 0, 0, 0, spec.kind === "hall" ? 0 : H / 2, W, spec.kind === "hall" ? H : H / 2);
   await yieldFrame();
 
@@ -58,7 +63,10 @@ export async function renderPanorama(spec: SceneSpec, width: number, fontFamily:
       /* fall back to whatever font is available */
     }
   }
-  shapes.forEach((s) => drawShape(ctx, s, sx, H, fontFamily));
+  for (let i = 0; i < shapes.length; i++) {
+    drawShape(ctx, shapes[i], sx, H, fontFamily);
+    if (i % 120 === 119) await yieldFrame();
+  }
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   return canvas;
 }

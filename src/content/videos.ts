@@ -6,10 +6,11 @@ import type { Video } from "@/lib/types";
  * Every video below uses a procedurally generated 360° scene. To publish real
  * footage, replace `source` with { type: "file", src: "/media/your-video.mp4" }
  * (or { type: "youtube", id: "…" }), set the real `format`, and point `poster`
- * at a real 16:9 still.
+ * at a real 16:9 still (run `npm run thumbs` to create its `-thumb.jpg`).
  */
 
 const poster = (slug: string) => `/media/placeholder/posters/${slug}.jpg`;
+const thumb = (slug: string) => `/media/placeholder/posters/${slug}-thumb.jpg`;
 const CREDIT = "Placeholder scene, generated in your browser. Replace with real footage.";
 
 const goldShrine = (lon: number, extra: Partial<ShrineOpts> = {}): ShrineOpts => ({
@@ -37,6 +38,7 @@ export const videos: Video[] = [
       scene: { kind: "courtyard", sky: "night", seed: 11, shrines: [goldShrine(180)], arcade: "tile", inlay: "#3c5f55", particles: ["lights"] },
     },
     poster: poster("night-at-the-haram-of-imam-husayn"),
+    thumb: thumb("night-at-the-haram-of-imam-husayn"),
     duration: 412,
     publishedAt: "2026-07-03",
     views: 48210,
@@ -66,6 +68,7 @@ export const videos: Video[] = [
       },
     },
     poster: poster("bayn-al-haramayn-at-dusk"),
+    thumb: thumb("bayn-al-haramayn-at-dusk"),
     duration: 538,
     publishedAt: "2026-08-11",
     views: 31877,
@@ -87,6 +90,7 @@ export const videos: Video[] = [
       scene: { kind: "courtyard", sky: "dawn", seed: 33, shrines: [goldShrine(180)], arcade: "tile", inlay: "#2f4f6f", particles: ["pigeons"] },
     },
     poster: poster("shrine-of-abbas-at-dawn"),
+    thumb: thumb("shrine-of-abbas-at-dawn"),
     duration: 365,
     publishedAt: "2026-05-19",
     views: 22104,
@@ -116,6 +120,7 @@ export const videos: Video[] = [
       },
     },
     poster: poster("haram-of-imam-ali-najaf"),
+    thumb: thumb("haram-of-imam-ali-najaf"),
     duration: 486,
     publishedAt: "2026-04-02",
     views: 39560,
@@ -145,6 +150,7 @@ export const videos: Video[] = [
       },
     },
     poster: poster("golden-domes-of-kadhimiya"),
+    thumb: thumb("golden-domes-of-kadhimiya"),
     duration: 330,
     publishedAt: "2026-03-14",
     views: 15402,
@@ -173,6 +179,7 @@ export const videos: Video[] = [
       },
     },
     poster: poster("samarra-the-restored-dome"),
+    thumb: thumb("samarra-the-restored-dome"),
     duration: 298,
     publishedAt: "2026-02-08",
     views: 9873,
@@ -202,6 +209,7 @@ export const videos: Video[] = [
       },
     },
     poster: poster("imam-rida-shrine-night"),
+    thumb: thumb("imam-rida-shrine-night"),
     duration: 590,
     publishedAt: "2026-06-21",
     views: 27390,
@@ -232,6 +240,7 @@ export const videos: Video[] = [
       },
     },
     poster: poster("shrine-of-sayyida-masuma-qom"),
+    thumb: thumb("shrine-of-sayyida-masuma-qom"),
     duration: 344,
     publishedAt: "2026-01-27",
     views: 12988,
@@ -260,6 +269,7 @@ export const videos: Video[] = [
       },
     },
     poster: poster("shrine-of-sayyida-zaynab"),
+    thumb: thumb("shrine-of-sayyida-zaynab"),
     duration: 377,
     publishedAt: "2026-05-02",
     views: 18451,
@@ -280,6 +290,7 @@ export const videos: Video[] = [
       scene: { kind: "plain", sky: "day", seed: 110, wall: true, graves: 180, distantMosqueLon: 205, particles: [] },
     },
     poster: poster("jannat-al-baqi"),
+    thumb: thumb("jannat-al-baqi"),
     duration: 268,
     publishedAt: "2026-04-25",
     views: 20733,
@@ -297,6 +308,7 @@ export const videos: Video[] = [
     format: "360-mono",
     source: { type: "generated", scene: { kind: "road", sky: "day", seed: 121, crowd: 320, particles: ["dust"] } },
     poster: poster("arbaeen-walk-najaf-to-karbala"),
+    thumb: thumb("arbaeen-walk-najaf-to-karbala"),
     duration: 902,
     publishedAt: "2026-08-14",
     views: 61204,
@@ -315,6 +327,7 @@ export const videos: Video[] = [
     format: "360-mono",
     source: { type: "generated", scene: { kind: "road", sky: "night", seed: 132, crowd: 170, particles: ["lights"] } },
     poster: poster("arbaeen-mawakib-at-night"),
+    thumb: thumb("arbaeen-mawakib-at-night"),
     duration: 655,
     publishedAt: "2026-08-15",
     views: 34218,
@@ -334,6 +347,7 @@ export const videos: Video[] = [
       scene: { kind: "hall", seed: 143, banners: ["يا حسين", "يا أبا الفضل العباس", "السلام على الحسين", "يا زينب"], particles: ["motes"] },
     },
     poster: poster("majlis-on-the-night-of-ashura"),
+    thumb: thumb("majlis-on-the-night-of-ashura"),
     duration: 1520,
     publishedAt: "2026-06-25",
     views: 25877,
@@ -351,6 +365,7 @@ export const videos: Video[] = [
     format: "360-mono",
     source: { type: "generated", scene: { kind: "plain", sky: "dusk", seed: 154, river: true, tents: 34, particles: ["dust"] } },
     poster: poster("plains-of-karbala-61-ah"),
+    thumb: thumb("plains-of-karbala-61-ah"),
     duration: 720,
     publishedAt: "2026-07-01",
     views: 29011,

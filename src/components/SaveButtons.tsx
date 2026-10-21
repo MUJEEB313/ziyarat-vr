@@ -23,7 +23,7 @@ export function SaveIcon({ slug, list = "favourites" }: { slug: string; list?: L
       aria-pressed={on}
       aria-label={on ? c.on : c.off}
       title={on ? c.on : c.off}
-      className={`grid size-9 place-items-center rounded-full bg-black/45 backdrop-blur transition hover:bg-black/65 ${on ? "text-[var(--gold-strong)]" : "text-white"}`}
+      className={`grid size-11 place-items-center rounded-full bg-black/45 sm:size-9 backdrop-blur transition hover:bg-black/65 ${on ? "text-[var(--gold-strong)]" : "text-white"}`}
     >
       <Icon name={c.icon} size={18} fill={on && list === "favourites" ? "currentColor" : "none"} />
     </button>

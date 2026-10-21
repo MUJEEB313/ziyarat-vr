@@ -7,7 +7,7 @@ export function SiteFooter() {
   return (
     <footer className="relative mt-24 border-t border-line bg-surface">
       <div className="bg-girih pointer-events-none absolute inset-0 opacity-[0.04]" />
-      <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6">
+      <div className="relative mx-auto max-w-7xl px-4 pt-14 pb-[calc(5.5rem+env(safe-area-inset-bottom))] sm:px-6 lg:pb-14">
         <p className="arabic mb-10 text-center text-2xl text-gold-ink sm:text-3xl">اللّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَآلِ مُحَمَّد</p>
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { categoryLabel, getShrine, shrineShortName, videosForCollection, videosForShrine } from "@/content";
+import { categoryLabel, getShrine, shrineShortName, thumbOf, videosForCollection, videosForShrine } from "@/content";
 import { formatDuration, formatLabel, formatViews } from "@/lib/format";
 import { asset } from "@/lib/site";
 import type { Collection, Shrine, Video } from "@/lib/types";
@@ -10,11 +10,12 @@ export function VideoCard({ video, size = "md", progress }: { video: Video; size
   const shrine = getShrine(video.shrine);
   return (
     <div className="group relative">
-    <Link href={`/videos/${video.slug}`} className="block focus-visible:outline-none">
+    <Link href={`/videos/${video.slug}`} prefetch={false} className="block focus-visible:outline-none">
       <div className="relative aspect-video overflow-hidden rounded-2xl bg-surface-2 ring-1 ring-line transition group-hover:ring-gold/50 group-focus-visible:ring-2 group-focus-visible:ring-gold">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={asset(video.poster)}
+          src={asset(thumbOf(video))}
+          decoding="async"
           alt=""
           loading="lazy"
           className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
@@ -74,9 +75,9 @@ export function VideoRail({ videos }: { videos: Video[] }) {
 
 export function ShrineCard({ shrine }: { shrine: Shrine }) {
   const vids = videosForShrine(shrine.slug);
-  const cover = vids[0]?.poster;
+  const cover = vids[0] && thumbOf(vids[0]);
   return (
-    <Link href={`/shrines/${shrine.slug}`} className="group relative block aspect-[4/5] overflow-hidden rounded-2xl bg-surface-2 ring-1 ring-line transition hover:ring-gold/50">
+    <Link href={`/shrines/${shrine.slug}`} prefetch={false} className="group relative block aspect-[4/5] overflow-hidden rounded-2xl bg-surface-2 ring-1 ring-line transition hover:ring-gold/50">
       {cover && (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={asset(cover)} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
@@ -106,14 +107,14 @@ const ACCENTS: Record<Collection["accent"], string> = {
 export function CollectionCard({ collection }: { collection: Collection }) {
   const vids = videosForCollection(collection.slug);
   return (
-    <Link href={`/collections/${collection.slug}`} className="group relative flex min-h-56 flex-col justify-end overflow-hidden rounded-2xl p-5 text-white ring-1 ring-line transition hover:ring-gold/50">
+    <Link href={`/collections/${collection.slug}`} prefetch={false} className="group relative flex min-h-56 flex-col justify-end overflow-hidden rounded-2xl p-5 text-white ring-1 ring-line transition hover:ring-gold/50">
       <div className={`absolute inset-0 bg-gradient-to-br ${ACCENTS[collection.accent]}`} />
       <div className="absolute inset-y-0 right-0 flex w-3/5 translate-x-6 items-center gap-2 opacity-80 transition duration-500 group-hover:translate-x-2">
         {vids.slice(0, 3).map((v, i) => (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             key={v.slug}
-            src={asset(v.poster)}
+            src={asset(thumbOf(v))}
             alt=""
             loading="lazy"
             className="aspect-[3/4] w-1/3 rounded-xl object-cover shadow-2xl ring-1 ring-white/20"
@@ -141,7 +142,7 @@ export function SectionHeading({ title, eyebrow, href, linkLabel = "View all" }:
         <h2 className="font-display text-3xl font-semibold sm:text-4xl">{title}</h2>
       </div>
       {href && (
-        <Link href={href} className="flex shrink-0 items-center gap-1 text-sm text-muted transition hover:text-gold-ink">
+        <Link href={href} className="-my-2 flex h-11 shrink-0 items-center gap-1 text-sm text-muted transition hover:text-gold-ink">
           {linkLabel} <Icon name="arrowRight" size={16} />
         </Link>
       )}

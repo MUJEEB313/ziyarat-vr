@@ -55,11 +55,11 @@ export function OccasionBanner() {
         </div>
         <div className="flex gap-2 sm:ml-auto">
           {next && (
-            <Link href={next.href} className="flex items-center gap-1.5 rounded-full bg-white/15 px-4 py-2 text-sm font-medium backdrop-blur transition hover:bg-white/25">
+            <Link href={next.href} className="flex h-11 items-center gap-1.5 rounded-full bg-white/15 px-4 text-sm font-medium backdrop-blur transition hover:bg-white/25">
               Watch related <Icon name="arrowRight" size={16} />
             </Link>
           )}
-          <Link href="/calendar" className="flex items-center rounded-full px-3 py-2 text-sm text-white/75 transition hover:text-white">
+          <Link href="/calendar" className="flex h-11 items-center rounded-full px-3 text-sm text-white/75 transition hover:text-white">
             Full calendar
           </Link>
         </div>

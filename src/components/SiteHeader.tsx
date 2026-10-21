@@ -26,10 +26,10 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`sticky top-0 z-40 transition-colors duration-300 ${scrolled || menuOpen ? "border-b border-line bg-bg/85 backdrop-blur-xl" : "border-b border-transparent bg-transparent"}`}
+      className={`sticky top-0 z-40 pt-[env(safe-area-inset-top)] transition-colors duration-300 ${scrolled || menuOpen ? "border-b border-line bg-bg/85 backdrop-blur-xl" : "border-b border-transparent bg-transparent"}`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6">
-        <Link href="/" className="shrink-0" aria-label="Ziyarat VR home">
+        <Link href="/" className="flex h-11 shrink-0 items-center" aria-label="Ziyarat VR home">
           <Logo />
         </Link>
         <nav className="ml-6 hidden items-center gap-1 lg:flex" aria-label="Main">
@@ -47,7 +47,7 @@ export function SiteHeader() {
           <SearchButton />
           <Link
             href="/saved"
-            className={`grid size-10 place-items-center rounded-full transition hover:bg-surface-2 ${isActive("/saved") ? "text-gold-ink" : "text-muted hover:text-fg"}`}
+            className={`hidden size-10 place-items-center rounded-full transition hover:bg-surface-2 lg:grid ${isActive("/saved") ? "text-gold-ink" : "text-muted hover:text-fg"}`}
             aria-label="Saved videos"
             title="Saved"
           >
@@ -67,7 +67,7 @@ export function SiteHeader() {
       </div>
       {menuOpen && (
         <nav id="mobile-nav" className="border-t border-line px-4 pt-2 pb-4 lg:hidden" aria-label="Mobile">
-          {[...nav, { href: "/saved", label: "Saved" }, { href: "/about", label: "About" }].map((n) => (
+          {[...nav, { href: "/about", label: "About" }].map((n) => (
             <Link
               key={n.href}
               href={n.href}
